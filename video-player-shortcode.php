@@ -47,7 +47,12 @@ class Video_Player_Shortcode {
 			'video_player'
 		);
 
-		$video_url = base64_decode($content);
+		if (strpos($content, '://') === false) {
+			$video_url = base64_decode($content);
+		} else {
+			$video_url = $content;
+		}
+
 		if (!filter_var($video_url, FILTER_VALIDATE_URL)) {
 			return 'Invalid YouTube URL';
 		}
@@ -64,10 +69,10 @@ class Video_Player_Shortcode {
 		$margin_bottom = esc_attr($atts['margin_bottom']);
 
 		return "
-            <div style=\"text-align: {$align}; margin-top: {$margin_top}px; margin-bottom: {$margin_bottom}px;\">
-                <iframe width=\"{$width}\" height=\"{$height}\" src=\"https://www.youtube.com/embed/{$video_id}\" frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen loading=\"lazy\"></iframe>
-            </div>
-        ";
+        <div style=\"text-align: {$align}; margin-top: {$margin_top}px; margin-bottom: {$margin_bottom}px;\">
+            <iframe width=\"{$width}\" height=\"{$height}\" src=\"https://www.youtube.com/embed/{$video_id}\" frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen loading=\"lazy\"></iframe>
+        </div>
+    ";
 	}
 }
 
